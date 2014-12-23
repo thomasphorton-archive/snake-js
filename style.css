@@ -1,0 +1,41 @@
+.game-wrapper {
+  position: relative;
+}
+
+.game-board {
+  display: block;
+  width: 100%;
+  background: url(/images/debut_dark.png) #333;
+  z-index: 1;
+}
+
+.game-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  z-index: 2;
+  color: #F9F3E3;
+}
+
+.game-msg {
+  visibility: hidden;
+  display: block;
+  width: 200px;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.btn {
+  display: block;
+  width: 140px;
+  margin: 10px auto 10px;
+  text-align: center;
+  padding: 15px;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
