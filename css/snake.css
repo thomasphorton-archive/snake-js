@@ -5,7 +5,7 @@
 .game-board {
   display: block;
   width: 100%;
-  background: url(/images/debut_dark.png) #333;
+  background: #333;
   z-index: 1;
 }
 

@@ -9,6 +9,20 @@ var environment = {
     snake_head: '#62868D'
   },
   el: $('.game-board'),
+  onTick: function() {
+    player.move();
+    
+    if (player.growQueue >= 1) {
+      player.grow();
+      player.growQueue --;
+    }
+    
+    if ((Math.random() < 0.02 && apples.apple.length < 5) || apples.apple.length === 0){
+      apples.add();
+    }
+
+    environment.draw();
+  },
   init: function() {
     msg.css({'visibility': 'visible'});
 
@@ -20,30 +34,22 @@ var environment = {
 
     environment.width = environment.el.width() / environment.nodeWidth;
 
-    ticker = setInterval(function(){
-      player.move();
-      
-      if (player.growQueue >= 1) {
-        player.grow();
-        player.growQueue --;
-      }
-      
-      if ((Math.random() < 0.02 && apples.apple.length < 5) || apples.apple.length === 0){
-        apples.add();
-      }
-      
-      environment.draw();
-    }, interval);
+    window.addEventListener('tick', environment.onTick, false);
+
+    clock.start();
+
   },
   pause: function(){
-    clearInterval(ticker);
+    clock.stop();
   },
   die: function() {
-    clearInterval(ticker);
+    clock.stop();
+    window.removeEventListener('tick', environment.onTick, false);
     startButton.text('Restart');
     overlay.fadeIn();
   },
   reset: function() {
+    clock.reset();
     score = 0;
     scoreboard.text(score);
     apples.apple = [];
@@ -202,45 +208,3 @@ $(document).keyup(function(e) {
   if (e.keyCode == 83 && player.direction.toString() != '0,-1') { player.direction = [0, 1] }   // s
   if (e.keyCode == 68 && player.direction.toString() != '-1,0') { player.direction = [1, 0] }   // d
 });
-
-$(function(){
-  window.addEventListener("devicemotion", onDeviceMotion, false);
-});
-
-function onDeviceMotion(event){
-  var accel = event.accelerationIncludingGravity;
-  switch (window.orientation) {  
-    case 0:  
-      if (accel.y > 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [0, -1] }   // w
-      if (accel.x < 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [-1, 0] }   // a
-      if (accel.y < 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [0, 1] }   // s
-      if (accel.x > 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [1, 0] }   // d
-          // Portrait 
-        break; 
-        
-    case 90:  
-      if (accel.y > 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [-1, 0] }   // w
-      if (accel.x < 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [0, 1] }   // a
-      if (accel.y < 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [1, 0] }   // s
-      if (accel.x > 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [0, -1] }   // d
-        // Landscape (Clockwise)
-        break;  
-        
-    case 180:  
-      if (accel.y > 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [0, 1] }   // w
-      if (accel.x < 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [1, 0] }   // a
-      if (accel.y < 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [0, -1] }   // s
-      if (accel.x > 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [-1, 0] }   // d
-        // Portrait (Upside-down)
-        break; 
-  
-    case -90:  
-      if (accel.y > 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [1, 0] }   // w
-      if (accel.x < 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [0, -1] }   // a
-      if (accel.y < 0 && Math.abs(accel.y) > Math.abs(accel.x)) { player.tilt = [-1, 0] }   // s
-      if (accel.x > 0 && Math.abs(accel.x) > Math.abs(accel.y)) { player.tilt = [0, 1] }   // d
-        // Landscape  (Counterclockwise)
-        break;
-    }
-  
-}

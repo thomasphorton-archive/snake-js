@@ -2,13 +2,25 @@
 <html>
   <head>
     <title>Snake.js</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='css/snake.css' />
+    <link rel="stylesheet" href='test/vendor/mocha.css' />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="test/vendor/mocha.js"></script>
+    <script src="test/vendor/chai.js"></script>
+    <script src="test/vendor/sinon.js"></script>
+    <script>
+      mocha.ui('bdd');
+      mocha.reporter('html');
+      expect = chai.expect;
+    </script>
     <script src="js/clock.js"></script>
     <script src="js/snake.js"></script>
   </head>
   <body>
+
+    <div id="mocha"></div>
 
     <section class="two">
       <div class="game-wrapper">
@@ -26,16 +38,10 @@
       </div>
     </section>
 
-    <section class="text_block_outer four">
-      <div class="text_block_inner">
-        <h3>Instructions:</h3>
-        <p>W: Up</p>
-        <p>A: Left</p>
-        <p>S: Down</p>
-        <p>D: Right</p>
-        <p>Collect apples (red/gold) to score and grow. Don't run into yourself or the wall!</p>
-      </div>
-    </section>
+    <script src="test/clock.js"></script>
+    <script>
+      mocha.run();
+    </script>
 
   </body>
 </html>
